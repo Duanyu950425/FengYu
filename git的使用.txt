@@ -1,0 +1,140 @@
+git 是一个分布式版本控制软件，本质上，是用 git 去管理文件夹
+
+windows
+1.安装，上 git 官网，下载安装包
+2.安装一直 next 即可
+3.安装好了后，鼠标右键，可以看到一个新增了两个按钮，一个是 git GUI here，一个是 git bash here
+
+
+
+git 管理版本的步骤
+1.先进入该文件夹（cd）
+2.初始化（让 git 管理该文件夹，初识化之后，会生成一个 .git 隐藏文件夹，用于存储所有 git 版本以及配置信息等，不要随意修改）
+3.进行管理
+4.生成版本
+
+
+
+git 全局设置
+git config --global user.name "big_cat_lrf"
+git config --global user.email "big_cat_lrf@163.com"
+（相当于创建了个用户）
+配置的三个参数以及优先级：  --local > --global > --system
+
+
+git 基本命令：
+git --version               # 查看当前安装的 git 版本
+git init                    # 初始化，意思是这个文件夹归 git 管了（得先进入要管理的文件夹才行）
+git status                  # 查看当前 状态
+                            # 没有被管理的文件显示为 红色，被管理的文件显示为 绿色
+                            # 如果当前文件夹里所有文件都已经被 git 管理并生成版本，则会返回以下两行
+                            #     On branch master
+                            #     nothing to commit, working tree clean
+                            # 如果文件被修改，则会被检测到并显示为红色，  modified: xxxfile
+                            # 文件被修改之后，还需要继续 git add 以及 git commit -m，此时就是 git commit -m "v2" 等等了
+git add file_name           # 单独管理某个文件，被管理的文件，还可以是通配符 * ，表示所有文件
+git add .                   # 管理当前目录下所有文件
+git commit -m "描述信息"      # 生成版本
+git log                     # 查看提交的所有版本（查看版本记录，有版本号）
+git reset --hard "版本号"    # 回滚到某个版本，回滚过后
+git reflog                  # 查看使用了回滚之后的版本，回滚之后，如果再使用 git log，只显示该版本及其之前的版本
+                            # 要回滚到显示的别的版本，依然使用 git reset --hard "版本号"（这个版本号和之前的不一样了）
+git branch                  # 查看分支，当前所处分支显示为绿色，并且前面有个 *
+git branch branch_name      # 创建新的分支，并命名为 branch_name
+                            # master 用于存储线上代码
+                            # dev 用于存储要修改的代码，所有修改的版本从这里拉分支
+                            # bug 用于紧急修复 bug
+git checkout branch_name    # 进入 branch_name 分支
+git merge branch_name       # 必须先进入比如 master，再执行 git merge bug，意思是把  bug 分支合并到 master 主干上
+git branch -d branch_name   # 删除某个分支，bug 修改完后可以把 bug 分支删掉
+git checkout -b dev         # 创建 dev 分支，并切换到该分支下目录下
+
+
+
+git 的三大区域：
+1.工作区
+  存放已经存在的当前版本（还没被修改），存放新增以及新修改了的文件（红色）
+2.缓存区
+  存放临时管理的文件，就是 git add 之后的文件（绿色）
+3.版本库
+  存放上传到版本库的文件，存放使用 git commit -m 提交后的文件
+
+所以：
+        git add xxxfile             git commit -m "描述信息"
+工作区   --------------->   缓存区   ------------------------>   版本区域
+工作区   <---------------   缓存区   <------------------------   版本区域
+        git reset HEAD              git reset --soft "版本号"
+工作区中：
+已修改文件 ---git checkout --->  回到之前没修改的状态
+
+
+
+github
+1.注册账号
+2.创建仓库  new repository
+  # 仓库创建好后，会有个 https 或者 ssh 连接，https://github.com/big-cat-lrf/dbhot.git ，代指远程仓库
+3.本地代码推送到远程仓库
+  git remote add origin https://github.com/big-cat-lrf/dbhot.git    # 给这个远程仓库起个别名为 origin
+  git push -u origin master    # -u 可写可不写（表示默认，下回可以直接 git push 即可），将 master 推送到 远程仓库
+4.此时会弹出让你输入用户名及密码
+5.从远程仓库拉代码（第一次，是直接把仓库整个拷贝下来）
+  git clone https://github.com/big-cat-lrf/dbhot.git
+6.此时查看分支版本，发现只有一个，如果把分支版本也有传，直接通过 checkout 切换分支即可（得先把分支也推送到远程仓库才行）
+7.如果 dev 和 master 不同步，不是最新的，首先要合并一下，进入 dev，然后 git merge master。再 git log 查看一下
+8.第二次拉代码的时候，使用的是 git pull https://github.com/big-cat-lrf/dbhot.git master（或 dev 或别的分支，先进入相应分支）
+  git pull origin dev 这一句可以拆分成两句（不过一般就写一句的）
+    git fetch origin dev   再  git merge origin/dev   即，先下载到版本库里，再合并到工作区中，git 为了区分这是远程仓库的，所以加了 origin/ 前缀
+9.最后开发完毕，要上线
+  切换到 master 分支，git checkout master，接着把 dev 合并到 master：git merge dev
+  再将线上代码推送到远程仓库中： git push origin master
+  可以再回到 dev 分支，并把它也上传上去 git checkout dev  -->  git push origin dev （其实此时的 dev 和 master 是一样的）
+10.去到公司或者家中，需要把 dev 和 master 都 pull 下来，因为这俩都是最新的
+  将 dev 和 master 拉下来之后，还可以 git checkout dev 切换到 dev 并将 master 的代码合并到 dev ：git merge master（养成这个习惯）
+
+
+除了 github（开源的，如果不开源想建立私有的，需要掏钱），还有 gitlab（自己公司买服务器自己搭建仓库），码云
+
+
+
+git 结合 beyondcompare
+1.安装好 beyondcompare
+2.在 git 中配置
+  git config --local merge.tool bc3    # 这句的意思是，配置一个新的工具，名字叫做 bc3（这个名字自己随便起）  --local 的意思是，只对本项目有效（本文件夹）
+  git config --local mergetool.path '安装 beyondecompare 的路径'
+  git config --local mergetool.keepBackup false    # 这行的意思是，不要生成额外的文件（否则比较完后会生成额外的记录文件）
+3.应用 beyondcompare 解决冲突
+  git mergetool
+
+
+
+
+
+代码修改完后，要请请求合并
+pull request，可以指定 review 的人
+review 通过之后，合并到 dev 中
+测试拉个 release 版本，再经过测试 release 版本，有问题再改，没问题的话，合并到 master
+
+
+
+如何给比较牛逼的开源网站贡献代码（或者修复bug）
+1.找到他们的项目，fork 源代码  -->  将别人的源代码拷贝到我自己的远程仓库
+2.在自己的仓库进行修改
+3.修改好后上传
+
+
+如果单纯这么写的话，那只有点 button 有点击按钮的效果，点 h1 里头的内容没有任何效果
+<button> xxx </button>
+<h1>xxxxxxxx</h1>
+
+
+如果这么写的话，就是点击 button 或者 h1，都有点击按钮的效果，label 把 button 和 h1 弄成了一个整体
+<label>
+    <button> xxx </button>
+    <h1>xxxxxxxx</h1>
+</label>
+
+
+git rebase -i 版本号1 版本号2  # 合并版本号 1 和 3 之间
+git rebase -i HEAD~3   # 从头开始，找最近的 3 条进行合并
+进去之后把 除了第一行的 pick 都换成 s
+接着，把类似 v1 ... v2 ... v3 改成 v1 & v2 & v3
