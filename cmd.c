@@ -42,7 +42,7 @@ void main03()
     }
 }
 // 将一个正整数分解质因数。例如：输入90，打印出90 = 2*3*3*5
-void main()
+void main04()
 {
     int n, i;
     printf("请输入整数：");
@@ -58,5 +58,16 @@ void main()
         }
     }
     printf("\n");
+    return 0;
+}
+
+// 用*号输出字母C的图案
+void main()
+{
+    printf("用*号输出字母C! \n");
+    printf(" ****\n");
+    printf(" *\n");
+    printf(" *\n");
+    printf(" ****\n");
     return 0;
 }
