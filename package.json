@@ -1,0 +1,27 @@
+{
+  "name": "fengyu",
+  "version": "1.0.0",
+  "description": "18229067966\r 2\r 3\r 4\r 5\r 6\r 7\r 8888\r 999",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "config": {
+    "commmitizen": {
+        "path": "node_modules/cz-conventional-changelog"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Duanyu950425/FengYu.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Duanyu950425/FengYu/issues"
+  },
+  "homepage": "https://github.com/Duanyu950425/FengYu#readme",
+  "devDependencies": {
+    "cz-conventional-changelog": "^3.3.0"
+  }
+}
