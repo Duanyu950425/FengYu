@@ -4,11 +4,17 @@
   "description": "18229067966\r 2\r 3\r 4\r 5\r 6\r 7\r 8888\r 999",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0"
   },
   "config": {
     "commmitizen": {
-        "path": "node_modules/cz-conventional-changelog"
+      "path": "node_modules/cz-conventional-changelog"
+    }
+  },
+  "husky": {
+    "hooks": {
+        "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
   },
   "repository": {
@@ -22,6 +28,9 @@
   },
   "homepage": "https://github.com/Duanyu950425/FengYu#readme",
   "devDependencies": {
-    "cz-conventional-changelog": "^3.3.0"
+    "@commitlint/cli": "^13.1.0",
+    "@commitlint/config-conventional": "^13.1.0",
+    "cz-conventional-changelog": "^3.3.0",
+    "husky": "^4.3.8"
   }
 }
